@@ -1,0 +1,13 @@
+#pragma once
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Database
+{
+public:
+
+	virtual void ReadConsole() = 0;
+	virtual void PrintAll() = 0;
+	virtual int Find() = 0;
+};
