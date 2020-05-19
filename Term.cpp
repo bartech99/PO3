@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <string>
 #include <sstream>
+#include <ctime>
 using namespace std;
 
 void Date::operator=(Date a)
@@ -11,7 +12,6 @@ void Date::operator=(Date a)
 	month = a.month;
 	year = a.year;
 }
-
 
 ostream& operator<<(ostream& s, const Date a)
 {
@@ -66,16 +66,15 @@ istream& operator>>(istream& s, Term& a)
 	return s;
 }
 
-string Term::TermToString(Term t)
+string Term::TermToString()
 {
 	stringstream ss;
-	ss << t;
+	ss << *this;
 	return ss.str();
 }
 
 Term Term::StringToTerm(string line)
 {
-	Term term;
 	Date date;
 	string temp;
 	int pos1 = 0;
@@ -96,7 +95,7 @@ Term Term::StringToTerm(string line)
 	pos1 = pos2 + 1;
 	date.year = atoi(temp.c_str());
 
-	term.from = date;
+	this->from = date;
 
 	pos2 = line.find('/', pos1);
 	temp = line.substr(pos1, pos2 - pos1);
@@ -112,7 +111,20 @@ Term Term::StringToTerm(string line)
 	temp = line.substr(pos1, pos2 - pos1);
 	date.year = atoi(temp.c_str());
 
-	term.to = date;
+	this->to = date;
 
-	return term;
+	return *this;
+}
+
+int Term::DaysBetween()
+{
+	Date from = this->from;
+	Date to = this->to;
+	struct tm a = { 0, 0, 0, from.day, from.month, from.year - 1900 };
+	struct tm b = { 0, 0, 0, to.day, to.month, to.year - 1900 };
+	time_t x = mktime(&a);
+	time_t y = mktime(&b);
+	if (x != (time_t)(-1) && y != (time_t)(-1))
+		return int(difftime(y, x) / int(60 * 60 * 24));
+	return 0;
 }

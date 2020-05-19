@@ -41,6 +41,7 @@ public:
 	friend ostream& operator<< (ostream&, const Term);
 	friend istream& operator>> (istream&, Term&);
 
-	string TermToString(Term);
+	string TermToString();
 	Term StringToTerm(string);
+	int DaysBetween();
 };

@@ -1,7 +1,5 @@
 #pragma once
 #include "Database.h"
-#include "Guests.h"
-#include "Rooms.h"
 #include "Term.h"
 #include <iostream>
 #include <vector>
@@ -13,7 +11,7 @@ struct Booking
 	int guest_ID; //ID klienta = nr indeksu w wektorze gosci
 	Term term; //termin rezerwacji
 
-	//tu GetTerm
+	friend ostream& operator<< (ostream&, const Booking); //przeciazenie wyjscia
 	Booking(int = 0, int = -1); //konstruktor
 	~Booking(); //destruktor
 };
@@ -22,10 +20,18 @@ class Bookings :
 	public Database
 {
 	vector <Booking> list;
+	Booking temp;
 
 public:
-
+	
 	virtual void ReadConsole();
 	virtual void PrintAll();
 	virtual int Find();
+	virtual void Remove();
+	virtual void ReadFile();
+	virtual void WriteFile();
+	virtual void Driver();
+
+	//gettery
+	double GetPrice();
 };

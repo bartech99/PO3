@@ -10,12 +10,15 @@ int Menu::Choise()
 
 int Menu::GetChoise(int max)
 {
+	cout << "Twoj wybor: ";
 	this->choise = GetValue(0, max);
+	cout << endl;
 	return this->choise;
 }
 
 void Menu::ListMain()
 {
+	system("cls");
 	cout << "--- MENU GLOWNE ---" << endl << endl;
 	cout << "1. Zarzadzanie baza gosci" << endl;
 	cout << "2. Zarzadzanie baza pokoi" << endl;
@@ -28,8 +31,9 @@ void Menu::ListMain()
 
 void Menu::ListGuest()
 {
+	system("cls");
 	cout << "--- Menu gosci ---" << endl << endl;
-	cout << "1. Sprawdz saldo goscia" << endl; //po wprowadzeniu imienia i nazwiska, pokazuje szczegoly gosci
+	cout << "1. Sprawdz rachunek goscia" << endl; //po wprowadzeniu imienia i nazwiska, pokazuje szczegoly gosci
 	cout << "2. Wyswietl wszystkich gosci" << endl; //lista wszystkich gosci
 	cout << "3. Pobierz oplate" << endl; //odlicza dana kwote z salda goscia (zamiast dodaj i usun)
 	cout << "0. Powrot do menu glownego" << endl << endl;
@@ -37,6 +41,7 @@ void Menu::ListGuest()
 
 void Menu::ListRoom()
 {
+	system("cls");
 	cout << endl << "--- Menu pokoi ---" << endl << endl;
 	cout << "1. Znajdz i wyswietl szczegoly pokoju" << endl; //po wprowadzeniu nazwy, pokazuje pasujace ze szczegolami
 	cout << "2. Wyswietl wszystkie pokoje" << endl; //lista wszystkich pokoi
@@ -47,6 +52,7 @@ void Menu::ListRoom()
 
 void Menu::ListBooking()
 {
+	system("cls");
 	cout << "--- Menu rezerwacji ---" << endl << endl;
 	cout << "1. Znajdz i wyswietl szczegoly rezerwacji" << endl; //po wprowadzeniu imienia i nazwiska, pokazuje szczegoly
 	cout << "2. Wyswietl wszystkie rezerwacje" << endl; //lista wszystkich 
@@ -66,7 +72,7 @@ Menu::~Menu()
 
 void PressAnyKey()
 {
-	cout << "Nacisnij dowolny przycisk, aby kontynuowac..." << endl;
+	cout << endl << "Nacisnij dowolny przycisk, aby kontynuowac..." << endl;
 	_getch();
 	system("cls");
 }

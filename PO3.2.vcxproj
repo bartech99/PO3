@@ -149,7 +149,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bookings.cpp" />
-    <ClCompile Include="Database.cpp" />
     <ClCompile Include="Guests.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
