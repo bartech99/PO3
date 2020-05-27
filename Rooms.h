@@ -24,10 +24,12 @@ class Rooms :
 {
 	vector <Room> list;
 	Room temp;
+	Term tempTerm;
 
 public:
 
 	void AddTerm(int, Term);
+	void Remove(int, Term);
 
 	virtual void ReadConsole();
 	virtual void PrintAll();

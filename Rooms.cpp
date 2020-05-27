@@ -1,7 +1,10 @@
 #include "Rooms.h"
 #include "Menu.h"
+#include "Term.h"
+#include "Bookings.h"
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 void Room::GetFacilities(string line)
@@ -50,13 +53,24 @@ Room::Room(string n, double p, int m)
 
 Room::~Room()
 {
+	this->facilities.clear();
+	this->terms.clear();
 }
 
 void Rooms::AddTerm(int x, Term term)
 {
 	if (x < 0 || x >= int(this->list.size()))
 		return;
-	this->list[x - 1].terms.push_back(term);
+	this->list[x].terms.push_back(term);
+}
+
+void Rooms::Remove(int id, Term term)
+{
+	temp = this->list[id];
+	unsigned int i = 0;
+	while (i < temp.terms.size() && !(temp.terms[i] == term))
+		i++;
+	this->list[id].terms.erase(this->list[id].terms.begin() + i);
 }
 
 void Rooms::ReadConsole()
@@ -78,25 +92,120 @@ void Rooms::ReadConsole()
 
 void Rooms::PrintAll()
 {
-	for (auto i : this->list)
-		cout << i << endl;
+	for (unsigned int i = 0; i < this->list.size(); i++)
+	{
+		cout << i + 1 << ". ";
+		cout << this->list[i];
+	}
 }
 
 int Rooms::Find()
 {
-	return 0;
+	int found = 0;
+	for (unsigned int i = 0; i < this->list.size(); i++)
+	{
+		if (this->list[i].max_person >= this->temp.max_person)
+		{
+			if (this->list[i].terms.size() == 1)
+			{
+				if (this->list[i].terms[0] < this->tempTerm || this->list[i].terms[0] > this->tempTerm)
+				{
+					found++;
+					cout << this->list[i];
+				}
+			}
+			else if (this->list[i].terms.size() >= 2)
+			{
+				for (unsigned int j = 0; j < this->list[i].terms.size() - 1; i++)
+				{
+					if (this->list[i].terms[j] < this->tempTerm && this->list[i].terms[j + 1] > this->tempTerm)
+					{
+						found++;
+						cout << this->list[i];
+					}
+				}
+			}
+		}
+	}
+	return found;
 }
 
 void Rooms::Remove()
 {
+	int id;
+	cout << "Podaj numer drzwi pokoju: ";
+	id = GetValue(1, this->list.size());
+	this->list.erase(this->list.begin() + id - 1);
+	cout << "Pokoj usuniety z bazy." << endl;
 }
 
 void Rooms::ReadFile()
 {
+	cout << "Wczytywanie bazy pokoi... ";
+	fstream file;
+	Term term;
+	string line;
+	file.open("Data files/rooms.txt", ios::in);
+	if (!file.good())
+	{
+		cout << "blad!" << endl;
+		return;
+	}
+	while (!file.eof() && file >> this->temp.name && file >> this->temp.price && file >> this->temp.max_person)
+	{
+		this->temp.facilities.clear();
+		this->temp.terms.clear();
+		int x;
+
+		file >> x;
+		for (int i = 0; i < x; i++)
+		{
+			file >> line;
+			this->temp.facilities.push_back(line);
+		}
+
+		file >> x;
+		for (int i = 0; i < x; i++)
+		{
+			term.StringToTerm(line);
+			this->temp.terms.push_back(term);
+			file >> line;
+		}
+
+		this->list.push_back(this->temp);
+	}
+	file.close();
+	cout << "OK" << endl;
 }
 
 void Rooms::WriteFile()
 {
+	cout << "Zapisywanie bazy pokoi... ";
+	fstream file;
+	file.open("Data files/rooms.txt",ios::out);
+	if (!file.good())
+	{
+		cout << "blad!" << endl;
+		return;
+	}
+	for (auto i : this->list)
+	{
+		file << i.name << " ";
+		file << i.price << " ";
+		file << i.max_person << endl;
+
+		file << i.facilities.size() << " ";
+		for (auto j : i.facilities)
+			file << j << " ";
+		file << endl;
+
+		file << i.terms.size() << " ";
+		for (auto j : i.terms)
+			file << j << " ";
+		file << endl;
+	}
+	file.close();
+	cout << "OK" << endl;
 }
 
 void Rooms::Driver()
@@ -111,20 +220,33 @@ void Rooms::Driver()
 
 	case 1:
 
+		cout << "--- Wyszukiwanie pokoju---" << endl << endl;
+		cout << "Podaj ilosc osob do zameldowania: ";
+		this->temp.max_person = GetValue(1, 20);
+		cout << "Podaj termin: ";
+		cin >> this->tempTerm;
+		system("cls");
+		cout << "Pasujace wyniki:" << endl << endl;
+		if (!this->Find())
+			cout << "Nie znaleziono pasujacych." << endl;
 		break;
 
 	case 2:
 
+		cout << "---Lista pokoi---" << endl << endl;
 		this->PrintAll();
 		break;
 
 	case 3:
 
+		cout << "--- Dodawanie pokoju---" << endl << endl;
 		this->ReadConsole();
 		break;
 
 	case 4:
 
+		cout << "--- Usuwanie pokoju---" << endl << endl;
+		this->Remove();
 		break;
 	}
 	PressAnyKey();

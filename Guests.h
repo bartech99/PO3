@@ -13,7 +13,6 @@ struct Guest
 	bool operator==(const Guest);
 	friend ostream& operator<< (ostream&, const Guest); //przeciazenie wyjscia
 	Guest(string = "brak", string = "brak" , double = 0.0); //konstruktor
-	~Guest(); //destruktor
 };
 
 class Guests :
@@ -38,4 +37,5 @@ public:
 	
 	//inne pomocnicze
 	int Add(); //wyszukuje goscia w wektorze i dopisuje rachunek
+	void Pay();
 };

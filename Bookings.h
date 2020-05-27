@@ -13,7 +13,6 @@ struct Booking
 
 	friend ostream& operator<< (ostream&, const Booking); //przeciazenie wyjscia
 	Booking(int = 0, int = -1); //konstruktor
-	~Booking(); //destruktor
 };
 
 class Bookings :
@@ -21,6 +20,7 @@ class Bookings :
 {
 	vector <Booking> list;
 	Booking temp;
+	int* results;
 
 public:
 	
@@ -31,7 +31,9 @@ public:
 	virtual void ReadFile();
 	virtual void WriteFile();
 	virtual void Driver();
+	void Today();
 
 	//gettery
 	double GetPrice();
+	int GetGuestID();
 };

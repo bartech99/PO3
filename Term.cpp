@@ -4,13 +4,40 @@
 #include <string>
 #include <sstream>
 #include <ctime>
+#include <windows.h>
+#include <winbase.h>
 using namespace std;
 
 void Date::operator=(Date a)
 {
-	day = a.day;
-	month = a.month;
-	year = a.year;
+	this->day = a.day;
+	this->month = a.month;
+	this->year = a.year;
+}
+
+bool Date::operator<(Date a)
+{
+	if (this->year <= a.year)
+		if (this->month <= a.month)
+			if (this->day <= a.day)
+				return true;
+	return false;
+}
+
+bool Date::operator>(Date a)
+{
+	if (this->year >= a.year)
+		if (this->month >= a.month)
+			if (this->day >= a.day)
+				return true;
+	return false;
+}
+
+bool Date::operator==(Date a)
+{
+	if (this->day == a.day && this->month == a.month && this->year == a.year)
+		return true;
+	return false;
 }
 
 ostream& operator<<(ostream& s, const Date a)
@@ -42,14 +69,55 @@ Date::Date(int a, int b, int c)
 	year = c;
 }
 
-Date::~Date()
-{
-}
-
 void Term::operator=(Term a)
 {
 	from = a.from;
 	to = a.to;
+}
+
+bool Term::operator<(Term a)
+{
+	if (this->to < a.from)
+		return true;
+	else
+		return false;
+}
+
+bool Term::operator>(Term a)
+{
+	if (a.to < this->from)
+		return true;
+	else
+		return false;
+}
+
+bool Term::operator==(Term a)
+{
+	if (this->from == a.from && this->to == a.to)
+		return true;
+	return false;
+}
+
+bool Term::Begins()
+{
+	SYSTEMTIME st;
+	GetSystemTime(&st);
+	Date temp = this->from;
+
+	if (temp.day == st.wDay && temp.month == st.wMonth && temp.year == st.wYear)
+		return true;
+	return false;
+}
+
+bool Term::Ends()
+{
+	SYSTEMTIME st;
+	GetSystemTime(&st);
+	Date temp = this->to;
+
+	if (temp.day == st.wDay && temp.month == st.wMonth && temp.year == st.wYear)
+		return true;
+	return false;
 }
 
 ostream& operator<<(ostream& s, const Term a)

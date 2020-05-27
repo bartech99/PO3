@@ -29,7 +29,9 @@ int main()
 			cin >> check;
 			if (check != 'n')
 			{
-				//tu zapis do pliku
+				rooms->WriteFile();
+				guests->WriteFile();
+				bookings->WriteFile();
 			}
 			return 0;
 
@@ -49,19 +51,33 @@ int main()
 			break;
 
 		case 4:
-
-			//dziennik
+			
+			cout << "--- Dziennik ---" << endl;
+			bookings->Today();
 			PressAnyKey();
 			break;
 
 		case 5:
 
-			//wczytaj
+			delete rooms;
+			delete guests;
+			delete bookings;
+			rooms = new Rooms();
+			bookings = new Bookings();
+			guests = new Guests();
+
+			rooms->ReadFile();
+			guests->ReadFile();
+			bookings->ReadFile();
+			PressAnyKey();
 			break;
 
 		case 6:
 
-			//zapisz
+			rooms->WriteFile();
+			guests->WriteFile();
+			bookings->WriteFile();
+			PressAnyKey();
 			break;
 		}
 	}
