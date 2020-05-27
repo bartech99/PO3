@@ -101,15 +101,18 @@ void Bookings::ReadFile()
 {
 	cout << "Wczytywanie bazy rezerwacji... ";
 	fstream file;
+	string line;
+	Term term;
 	file.open("Data files/bookings.txt", ios::in);
 	if (!file.good())
 	{
 		cout << "blad!" << endl;
 		return;
 	}
-		cout << "TU";
-	while (!file.eof() && file >> this->temp.room_ID && file >> this->temp.guest_ID && file >> this->temp.term)
+	while (!file.eof() && file >> this->temp.room_ID && file >> this->temp.guest_ID)
 	{
+		file >> line;
+		this->temp.term = term.StringToTerm(line);
 		this->list.push_back(this->temp);
 	}
 	file.close();
